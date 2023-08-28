@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(VerticalLayoutGroup))]
+[RequireComponent(typeof(ContentSizeFitter))]
 public class ElementsList : MonoBehaviour
 {
     [SerializeField] private Transform _elementsParent;

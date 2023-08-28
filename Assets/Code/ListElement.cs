@@ -16,4 +16,9 @@ public class ListElement : MonoBehaviour
         _element = element;
         _text.text = _element.name;
     }
+
+    public void OnClick()
+    {
+        Debug.Log($"{_element.name} is clicked");
+    }
 }

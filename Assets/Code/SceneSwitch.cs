@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(Image))]
 [RequireComponent(typeof(Animator))]
 public class SceneSwitch : MonoBehaviour
 {
@@ -35,6 +37,13 @@ public class SceneSwitch : MonoBehaviour
 
     public void LoadScene()
     {
+        if (_nextScene == -1)
+        {
+            Application.Quit();
+
+            return;
+        }
+
         if (_nextScene != -1)
             SceneManager.LoadScene(_nextScene);
     }

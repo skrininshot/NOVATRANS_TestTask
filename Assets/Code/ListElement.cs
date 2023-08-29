@@ -1,18 +1,12 @@
 using UnityEngine;
 using TMPro;
-
-public delegate void SelectElementHandler(Transform selectedElement);
+using System;
 
 public class ListElement : MonoBehaviour
 {
     [SerializeField] private TMP_Text _text;
     [SerializeField] private Transform _element;
-    public event SelectElementHandler OnElementSelect;
-
-    private void OnValidate()
-    {
-        _text = GetComponentInChildren<TMP_Text>();
-    }
+    public Action<Transform> OnElementSelect;
 
     public void SetElement(Transform element)
     {

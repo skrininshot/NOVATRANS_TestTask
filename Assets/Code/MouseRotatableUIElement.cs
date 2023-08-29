@@ -17,6 +17,9 @@ public class MouseRotatableUIElement : MonoBehaviour, IPointerDownHandler, IDrag
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (_rotatableObject == null)
+            return;
+
         var delta = eventData.position - _mouseOrigin;
         _mouseOrigin = eventData.position;
 

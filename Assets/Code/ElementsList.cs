@@ -9,7 +9,8 @@ public class ElementsList : MonoBehaviour
     [SerializeField] private Transform _elementsParent;
     [SerializeField] private ListElement _listElementPrefab;
     private List<ListElement> _elementsList = new();
-    Transform selectedElement = null;
+    Transform selectedElementTransform = null;
+
     private void Awake()
     {
         if (_elementsParent != null)
@@ -26,14 +27,14 @@ public class ElementsList : MonoBehaviour
 
     private void ShowElement(Transform element)
     {
-        if (selectedElement != element)
+        if (selectedElementTransform != element)
         {
-            selectedElement = element;
+            selectedElementTransform = element;
             HideAllExcept(element);
         }
         else
         {
-            selectedElement = null;
+            selectedElementTransform = null;
             ShowAll();
         }
     }
@@ -69,7 +70,7 @@ public class ElementsList : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (ListElement element in _elementsList)
-            element.OnElementSelect -= ShowElement;
+        for (int i = 0; i < _elementsList.Count; i++)
+            _elementsList[i].OnElementSelect -= ShowElement;
     }
 }

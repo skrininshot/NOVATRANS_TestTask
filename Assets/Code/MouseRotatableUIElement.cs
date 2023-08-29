@@ -8,7 +8,7 @@ public class MouseRotatableUIElement : MonoBehaviour, IPointerDownHandler, IDrag
     [SerializeField] private Transform _rotatableObject;
     [SerializeField] private Camera _cam;
     [SerializeField] private float _rotationSpeed = 1f;
-    private Vector3 _mouseOrigin;
+    private Vector2 _mouseOrigin;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -17,8 +17,8 @@ public class MouseRotatableUIElement : MonoBehaviour, IPointerDownHandler, IDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        var delta = Input.mousePosition - _mouseOrigin;
-        _mouseOrigin = Input.mousePosition;
+        var delta = eventData.position - _mouseOrigin;
+        _mouseOrigin = eventData.position;
 
         var axis = Quaternion.AngleAxis(-90f, Vector3.forward) * delta;
         _rotatableObject.rotation = Quaternion.AngleAxis(delta.magnitude * _rotationSpeed, axis) * _rotatableObject.rotation;

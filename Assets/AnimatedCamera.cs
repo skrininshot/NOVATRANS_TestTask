@@ -7,6 +7,12 @@ public class AnimatedCamera : MonoBehaviour
     [SerializeField] private ElementsList _elementsList;
     [SerializeField] private Animator _animator;
     private Transform _currentElement;
+    private bool _isApproached;
+
+    private void OnValidate()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     private void Awake()
     {
@@ -15,10 +21,16 @@ public class AnimatedCamera : MonoBehaviour
 
     private void HandleAction(Transform element)
     {
-        if (element != null && _currentElement == null)
+        if (!_isApproached)
+        {
             _animator.SetTrigger("Approach");
-        if (element == null && _currentElement != null)
+            _isApproached = true;
+        }
+        else if (_isApproached && element == _currentElement)
+        {
             _animator.SetTrigger("Distance");
+            _isApproached = false;
+        }
 
         _currentElement = element;
     }

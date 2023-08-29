@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,10 +7,12 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ContentSizeFitter))]
 public class ElementsList : MonoBehaviour
 {
+    public Action<Transform> OnElementSelect;
+
     [SerializeField] private Transform _elementsParent;
     [SerializeField] private ListElement _listElementPrefab;
     private List<ListElement> _elementsList = new();
-    Transform selectedElementTransform = null;
+    private Transform _selectedElementTransform = null;
 
     private void Awake()
     {
@@ -27,16 +30,18 @@ public class ElementsList : MonoBehaviour
 
     private void ShowElement(Transform element)
     {
-        if (selectedElementTransform != element)
+        if (_selectedElementTransform != element)
         {
-            selectedElementTransform = element;
+            _selectedElementTransform = element;
             HideAllExcept(element);
         }
         else
         {
-            selectedElementTransform = null;
+            _selectedElementTransform = null;
             ShowAll();
         }
+
+        OnElementSelect?.Invoke(_selectedElementTransform);
     }
 
     private void HideAllExcept(Transform element)

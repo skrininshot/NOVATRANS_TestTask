@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneSwitch : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
-    private int _nextScene = -1;
+    private int _nextScene;
 
     private void OnValidate()
     {

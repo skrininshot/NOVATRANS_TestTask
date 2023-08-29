@@ -4,9 +4,10 @@ using System;
 
 public class ListElement : MonoBehaviour
 {
+    public Action<Transform> OnElementSelect;
+
     [SerializeField] private TMP_Text _text;
     [SerializeField] private Transform _element;
-    public Action<Transform> OnElementSelect;
 
     public void SetElement(Transform element)
     {

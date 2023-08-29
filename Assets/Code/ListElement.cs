@@ -1,10 +1,13 @@
 using UnityEngine;
 using TMPro;
 
+public delegate void SelectElementHandler(Transform selectedElement);
+
 public class ListElement : MonoBehaviour
 {
     [SerializeField] private TMP_Text _text;
     [SerializeField] private Transform _element;
+    public event SelectElementHandler OnElementSelect;
 
     private void OnValidate()
     {
@@ -20,5 +23,6 @@ public class ListElement : MonoBehaviour
     public void OnClick()
     {
         Debug.Log($"{_element.name} is clicked");
+        OnElementSelect?.Invoke(_element);
     }
 }

@@ -1,10 +1,14 @@
+using System;
 using UnityEngine;
 
 public class Reductor : MonoBehaviour
 {
+    public Action<ReductorMode> OnModeChanged;
+
     [SerializeField] private ElementsList _elementsList;
-    private Transform _selectedElementTransform = null;
     [SerializeField] private Animator _animator;
+    [SerializeField] private ParticleSystem _explosionVFX;
+    private Transform _selectedElementTransform = null;
     private bool _isExploded;
 
     private void OnValidate()
@@ -22,7 +26,7 @@ public class Reductor : MonoBehaviour
         if (_selectedElementTransform != element)
         {
             _selectedElementTransform = element;
-            HideAllExcept();
+            HideAllExceptSelected();
         }
         else
         {
@@ -31,7 +35,7 @@ public class Reductor : MonoBehaviour
         }  
     }
 
-    private void HideAllExcept()
+    private void HideAllExceptSelected()
     {
         for (int i = 0; i < transform.childCount; i++)
             transform.GetChild(i).gameObject.SetActive(false);
@@ -44,9 +48,7 @@ public class Reductor : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject child = transform.GetChild(i).gameObject;
-
-            if (!child.activeSelf)
-                child.SetActive(true);
+            child.SetActive(true);
         }
     }
 
@@ -55,14 +57,34 @@ public class Reductor : MonoBehaviour
         _isExploded = !_isExploded;
 
         if (_isExploded)
+        {
             _animator.SetTrigger("Explosion");
+            OnModeChanged?.Invoke(ReductorMode.Exploded);
+            ExplosionFX();
+        }
         else
+        {
             _animator.SetTrigger("Recovery");
+            OnModeChanged?.Invoke(ReductorMode.Recovery);
+        }
 
+        ShowAll();
+    }
+
+    private void ExplosionFX()
+    {
+        _explosionVFX.Play();
     }
 
     private void OnDestroy()
     {
         _elementsList.OnElementSelect -= ShowElement;
     }
+}
+
+public enum ReductorMode
+{
+    Exploded,
+    Recovery,
+    Default
 }

@@ -11,6 +11,7 @@ public class ElementsList : MonoBehaviour
 
     [SerializeField] private Transform _elementsParent;
     [SerializeField] private ListElement _listElementPrefab;
+    [SerializeField] private Reductor _reductor; 
     private List<ListElement> _elementsList = new();
 
     private void Awake()
@@ -25,6 +26,8 @@ public class ElementsList : MonoBehaviour
                 _elementsList.Add(newElement);
             }
         }
+
+        _reductor.OnModeChanged += OnReductorModeChanged;
     }
 
     private void OnElementSelectHandling(Transform element)
@@ -32,9 +35,31 @@ public class ElementsList : MonoBehaviour
         OnElementSelect?.Invoke(element);
     }
 
+    private void OnReductorModeChanged(ReductorMode mode)
+    {
+        switch (mode)
+        {
+            case ReductorMode.Exploded:
+                ShowList(false);
+                break;
+
+            case ReductorMode.Recovery:
+                ShowList(true);
+                break;
+        }
+    }
+
+    private void ShowList(bool show)
+    {
+        for (int i = 0; i < _elementsList.Count; i++)
+            _elementsList[i].gameObject.SetActive(show);
+    }
+
     private void OnDestroy()
     {
         for (int i = 0; i < _elementsList.Count; i++)
             _elementsList[i].OnElementSelect -= OnElementSelectHandling;
+
+        _reductor.OnModeChanged -= OnReductorModeChanged;
     }
 }
